@@ -26,24 +26,26 @@ let currentLikes = 0
 // display page based on data
 
 //fetch
+// when a function is declared as async, if you invoke the function elsewhere you must await that invocation
 
-const fetchFlat = () => {
-    fetch(baseImages)
-        .then(resp => resp.json())
-        .then(res => {
-            res.forEach(element => {
+const fetchFlat = async () => {
+    let req = await fetch(baseImages)
+    let resp = await req.json()
+    resp.forEach(element => {
                 updateCard(element)
-            })
-        })
-    fetch(baseComments)
-        .then(resp => resp.json())
-        .then(res => {
-            removeAllChildNodes(commentsList)
-            res.forEach(element => {
-                updateComments(element)
-            })
-        })
+    })
 }
+
+const fetchComments = async () => {
+    let req = await fetch(baseComments)
+    let resp = await req.json()
+    removeAllChildNodes(commentsList)
+    resp.forEach(element => {
+        updateComments(element)
+    })
+}
+
+
 
 
 // update card
@@ -120,6 +122,6 @@ const enableNewDog = (image) => {
 
 //invoke to render
 fetchFlat()
-
+fetchComments()
 
 
